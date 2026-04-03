@@ -1,0 +1,70 @@
+# Docker Compose for VaadVivaad local development
+# Usage: docker compose up -d
+# Stop:  docker compose down
+# Reset: docker compose down -v  (deletes all data)
+
+services:
+
+  # ============================================
+  # PostgreSQL 16 — Primary Database
+  # ============================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: vaadvivaad-postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: vaadvivaad
+      POSTGRES_USER: vaadvivaad
+      POSTGRES_PASSWORD: vaadvivaad123
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vaadvivaad"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # RabbitMQ 3 — Message Queue
+  # ============================================
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: vaadvivaad-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: vaadvivaad
+      RABBITMQ_DEFAULT_PASS: vaadvivaad123
+    volumes:
+      - rabbitmqdata:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # Redis 7 — Cache
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: vaadvivaad-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# Named volumes persist data across container restarts
+# docker compose down    → keeps data
+# docker compose down -v → DELETES data
+volumes:
+  pgdata:
+  rabbitmqdata:
+  redisdata:

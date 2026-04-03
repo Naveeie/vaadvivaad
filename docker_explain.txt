@@ -1,0 +1,46 @@
+### Every Line Explained
+
+**`image: postgres:16-alpine`**
+- `postgres` → official Docker image name
+- `16` → PostgreSQL version 16 (matches our tech stack)
+- `alpine` → Alpine Linux base, 5x smaller than default Debian image. In production, smaller images mean faster pulls and smaller attack surface.
+
+**`container_name: vaadvivaad-postgres`**
+- Gives the container a human-readable name instead of a random hash
+- You can run `docker logs vaadvivaad-postgres` by name
+
+**`ports: "5432:5432"`**
+- Format is `HOST_PORT:CONTAINER_PORT`
+- The container runs PostgreSQL on port 5432 internally
+- We map it to port 5432 on your Windows machine
+- So your Spring Boot app connects to `localhost:5432`
+
+**`environment:`**
+- These are environment variables injected into the container
+- `POSTGRES_DB: vaadvivaad` → creates a database named `vaadvivaad` on first startup
+- `POSTGRES_USER` / `POSTGRES_PASSWORD` → creates credentials
+
+**`volumes: pgdata:/var/lib/postgresql/data`**
+- Without this, data is LOST when the container stops
+- Named volume `pgdata` persists data on your disk
+- `docker compose down` → data survives
+- `docker compose down -v` → data is destroyed (useful for fresh start)
+
+**`healthcheck:`**
+- Docker periodically runs this command inside the container
+- If it fails, Docker marks the container as "unhealthy"
+- `pg_isready` is a PostgreSQL utility that checks if the server is accepting connections
+- This is used by dependent services to know when Postgres is truly ready
+
+**RabbitMQ `15672` port:**
+- Port `5672` → AMQP protocol (your app connects here)
+- Port `15672` → Management UI (browser dashboard)
+- You can visit `http://localhost:15672` and log in with `vaadvivaad/vaadvivaad123` to see queues, exchanges, and messages visually
+
+**Redis is intentionally simple:**
+- No password in dev (simplifies local development)
+- In production, we'd add `--requirepass` flag
+- `redis-cli ping` returns `PONG` if Redis is alive
+
+> **Interview Question:** "What are Docker volumes and why are they important?"
+> **Your answer:** "Docker containers are ephemeral — their filesystem is destroyed when the container is removed. Volumes provide persistent storage that survives container lifecycle. In our compose file, we use named volumes so PostgreSQL data persists across `docker compose down` and `up` cycles. For a complete reset, `docker compose down -v` removes volumes too."
