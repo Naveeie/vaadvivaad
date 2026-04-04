@@ -16,6 +16,6 @@ public interface HearingRepository extends JpaRepository<Hearing, UUID> {
 
     List<Hearing> findByCourtCaseIdOrderByHearingDateDesc(UUID caseId);
 
-    @Query("SELECT h FROM Hearing h WHERE h.hearingDate = :date")
+    @Query("SELECT h FROM Hearing h JOIN FETCH h.courtCase WHERE h.hearingDate = :date")
     List<Hearing> findByHearingDate(@Param("date") LocalDate date);
 }

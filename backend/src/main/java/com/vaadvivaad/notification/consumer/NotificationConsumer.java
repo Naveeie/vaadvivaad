@@ -1,6 +1,7 @@
 package com.vaadvivaad.notification.consumer;
 
 import com.vaadvivaad.config.RabbitMQConfig;
+import com.vaadvivaad.notification.event.HearingReminderEvent;
 import com.vaadvivaad.subscription.event.SubscriptionCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +17,20 @@ public class NotificationConsumer {
     @RabbitListener(queues = RabbitMQConfig.NOTIFICATION_QUEUE)
     public void handleSubscriptionCreated(SubscriptionCreatedEvent event) {
         log.info("=== SUBSCRIPTION EVENT RECEIVED ===");
-        log.info("User     : {} ({})", event.userFullName(), event.userEmail());
-        log.info("Case     : {} — {}", event.cnrNumber(), event.caseTitle());
-        log.info("Sub ID   : {}", event.subscriptionId());
-        log.info("At       : {}", event.subscribedAt());
-        log.info("Action   : Confirmation notification queued (Twilio in Session 9)");
+        log.info("User  : {} ({})", event.userFullName(), event.userEmail());
+        log.info("Case  : {} — {}", event.cnrNumber(), event.caseTitle());
+        log.info("Sub ID: {}", event.subscriptionId());
         log.info("===================================");
+    }
+
+    @RabbitListener(queues = RabbitMQConfig.NOTIFICATION_QUEUE)
+    public void handleHearingReminder(HearingReminderEvent event) {
+        log.info("=== HEARING REMINDER EVENT RECEIVED ===");
+        log.info("User    : {} ({})", event.userFullName(), event.userEmail());
+        log.info("Case    : {} — {}", event.cnrNumber(), event.caseDisplay());
+        log.info("Hearing : {} for {}", event.hearingDate(), event.hearingPurpose());
+        log.info("Phone   : {}", event.userPhone());
+        log.info("Action  : WhatsApp/SMS reminder (Twilio in Session 9)");
+        log.info("=======================================");
     }
 }

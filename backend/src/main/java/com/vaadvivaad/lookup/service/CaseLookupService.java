@@ -21,6 +21,8 @@ import com.vaadvivaad.lookup.entity.CourtCase;
 import com.vaadvivaad.lookup.entity.Hearing;
 import com.vaadvivaad.lookup.repository.CourtCaseRepository;
 import com.vaadvivaad.lookup.repository.HearingRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 @Service
 public class CaseLookupService {
@@ -39,6 +41,7 @@ public class CaseLookupService {
     // ==================== READ OPERATIONS ====================
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "cases", key = "#cnrNumber")
     public CaseResponse lookupByCnr(String cnrNumber) {
         log.info("Looking up case with CNR: {}", cnrNumber);
 
@@ -54,6 +57,7 @@ public class CaseLookupService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "cases", key = "'id:' + #id")
     public CaseResponse lookupById(UUID id) {
         CourtCase courtCase = courtCaseRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Court case", "id", id));
@@ -80,6 +84,7 @@ public class CaseLookupService {
     // ==================== WRITE OPERATIONS ====================
 
     @Transactional
+    @CacheEvict(value = "cases", allEntries = true)
     public CaseResponse createCase(CreateCaseRequest request) {
         log.info("Creating case with CNR: {}", request.cnrNumber());
 

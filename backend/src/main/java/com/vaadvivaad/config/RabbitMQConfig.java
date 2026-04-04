@@ -21,12 +21,22 @@ public class RabbitMQConfig {
     public static final String DLQ              = "notification.dlq";
     public static final String ROUTING_KEY      = "subscription.created";
     public static final String DLQ_ROUTING_KEY  = "subscription.created.dlq";
+    // becuase of redis we need second routing
+    public static final String HEARING_REMINDER_ROUTING_KEY = "hearing.reminder";
 
     // ─── Dead Letter Queue ───────────────────────────────────────────────
 
     @Bean
     public Queue deadLetterQueue() {
         return QueueBuilder.durable(DLQ).build();
+    }
+    
+    @Bean
+    public Binding hearingReminderBinding() {
+        return BindingBuilder
+                .bind(notificationQueue())
+                .to(exchange())
+                .with(HEARING_REMINDER_ROUTING_KEY);
     }
 
     // ─── Main Queue (points to DLQ on failure) ───────────────────────────
