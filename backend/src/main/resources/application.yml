@@ -3,10 +3,14 @@
 # ====================================================
 # Profile-specific overrides in application-dev.yml and application-prod.yml
 # Activate with: --spring.profiles.active=dev
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 86400000  # 24 hours in milliseconds
 
 spring:
-  application:
-    name: vaadvivaad
+  name: vaadvivaad
 
   # ---- Database (JPA + Hibernate) ----
   jpa:

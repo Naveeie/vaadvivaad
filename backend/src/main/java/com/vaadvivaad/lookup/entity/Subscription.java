@@ -3,10 +3,14 @@ package com.vaadvivaad.lookup.entity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import com.vaadvivaad.user.entity.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,12 +20,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
-import org.springframework.data.annotation.CreatedDate;
-
 @Entity
 @Table(name = "subscriptions", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"user_id", "case_id"})
 })
+@EntityListeners(AuditingEntityListener.class)
 public class Subscription {
 
     @Id
