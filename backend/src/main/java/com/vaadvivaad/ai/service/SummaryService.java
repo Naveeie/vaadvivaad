@@ -33,32 +33,32 @@ public class SummaryService {
         return;
         
 //        log.info("Generating Hindi summary for hearing: {}", hearingId);
-
-//        Hearing hearing = hearingRepository.findById(hearingId)
-//                .orElseThrow(() -> {
-//                    log.warn("Hearing not found for summary generation: {}", hearingId);
-//                    return new RuntimeException("Hearing not found: " + hearingId);
-//                });
 //
-//        // Skip if summary already exists
-//        if (hearing.getAiSummaryHindi() != null
-//                && !hearing.getAiSummaryHindi().isBlank()) {
-//            log.info("Summary already exists for hearing: {} — skipping", hearingId);
-//            return;
-//        }
+//       Hearing hearing = hearingRepository.findById(hearingId)
+//               .orElseThrow(() -> {
+//                   log.warn("Hearing not found for summary generation: {}", hearingId);
+//                   return new RuntimeException("Hearing not found: " + hearingId);
+//               });
 //
-//        String prompt = buildPrompt(hearing);
-//        String summary = claudeClient.complete(prompt);
+//       // Skip if summary already exists
+//       if (hearing.getAiSummaryHindi() != null
+//               && !hearing.getAiSummaryHindi().isBlank()) {
+//           log.info("Summary already exists for hearing: {} — skipping", hearingId);
+//           return;
+//       }
 //
-//        if (summary == null || summary.isBlank()) {
-//            log.warn("Empty summary received for hearing: {} — not saving", hearingId);
-//            return;
-//        }
+//       String prompt = buildPrompt(hearing);
+//       String summary = claudeClient.complete(prompt);
 //
-//        hearing.setAiSummaryHindi(summary.trim());
-//        hearingRepository.save(hearing);
+//       if (summary == null || summary.isBlank()) {
+//           log.warn("Empty summary received for hearing: {} — not saving", hearingId);
+//           return;
+//       }
 //
-//        log.info("Hindi summary saved for hearing: {}", hearingId);
+//       hearing.setAiSummaryHindi(summary.trim());
+//       hearingRepository.save(hearing);
+//
+//       log.info("Hindi summary saved for hearing: {}", hearingId);
     }
 
     /*
