@@ -8,9 +8,8 @@ public record CreateHearingRequest(
 
     @NotNull(message = "Hearing date is required")
     LocalDate hearingDate,
-
     String purpose,
-
-    String detail
+    String notes,
+    LocalDate nextHearingDate
 ) {
 }

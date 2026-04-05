@@ -7,7 +7,8 @@ public record HearingResponse(
     UUID id,
     LocalDate hearingDate,
     String purpose,
-    String detail,
+    String notes,              // was: detail
+    LocalDate nextHearingDate, // new field
     String aiSummaryHindi
 ) {
 }

@@ -114,7 +114,8 @@ public class CaseLookupService {
                 Hearing hearing = new Hearing();
                 hearing.setHearingDate(hearingRequest.hearingDate());
                 hearing.setPurpose(hearingRequest.purpose());
-                hearing.setDetail(hearingRequest.detail());
+                hearing.setNotes(hearingRequest.notes());
+                hearing.setNextHearingDate(hearingRequest.nextHearingDate()); // new
 
                 // Set the back-reference — parent ↔ child link
                 hearing.setCourtCase(courtCase);
@@ -158,11 +159,12 @@ public class CaseLookupService {
 
     private HearingResponse mapHearingToResponse(Hearing hearing) {
         return new HearingResponse(
-            hearing.getId(),
-            hearing.getHearingDate(),
-            hearing.getPurpose(),
-            hearing.getDetail(),
-            hearing.getAiSummaryHindi()
+                hearing.getId(),
+                hearing.getHearingDate(),
+                hearing.getPurpose(),
+                hearing.getNotes(),            // was: hearing.getDetail()
+                hearing.getNextHearingDate(),  // new
+                hearing.getAiSummaryHindi()
         );
     }
 }

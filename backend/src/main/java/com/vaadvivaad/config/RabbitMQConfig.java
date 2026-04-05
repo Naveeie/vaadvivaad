@@ -24,6 +24,12 @@ public class RabbitMQConfig {
     // becuase of redis we need second routing
     public static final String HEARING_REMINDER_ROUTING_KEY = "hearing.reminder";
 
+    
+    public static final String SUMMARY_REQUEST_QUEUE = "summary.request.queue";
+    public static final String SUMMARY_REQUEST_DLQ = "summary.request.dlq";
+    public static final String SUMMARY_EXCHANGE = "summary.exchange";
+    public static final String SUMMARY_ROUTING_KEY = "summary.request";
+    
     // ─── Dead Letter Queue ───────────────────────────────────────────────
 
     @Bean
@@ -86,5 +92,31 @@ public class RabbitMQConfig {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setMessageConverter(jsonMessageConverter());
         return template;
+    }
+    
+    @Bean
+    public Queue summaryRequestQueue() {
+        return QueueBuilder.durable(SUMMARY_REQUEST_QUEUE)
+                .withArgument("x-dead-letter-exchange", "")
+                .withArgument("x-dead-letter-routing-key", SUMMARY_REQUEST_DLQ)
+                .build();
+    }
+
+    @Bean
+    public Queue summaryRequestDlq() {
+        return QueueBuilder.durable(SUMMARY_REQUEST_DLQ).build();
+    }
+
+    @Bean
+    public DirectExchange summaryExchange() {
+        return new DirectExchange(SUMMARY_EXCHANGE, true, false);
+    }
+
+    @Bean
+    public Binding summaryBinding() {
+        return BindingBuilder
+                .bind(summaryRequestQueue())
+                .to(summaryExchange())
+                .with(SUMMARY_ROUTING_KEY);
     }
 }
