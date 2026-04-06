@@ -1,0 +1,34 @@
+# ====================================================
+# VaadVivaad — Production Profile
+# ====================================================
+
+spring:
+  # ---- Database (injected from environment variables) ----
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
+  # ---- JPA ----
+  jpa:
+    show-sql: false
+
+  # ---- RabbitMQ ----
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+
+  # ---- Redis ----
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+
+# ---- Logging ----
+logging:
+  level:
+    com.vaadvivaad: INFO
+    org.springframework.web: WARN
+    org.hibernate.SQL: WARN

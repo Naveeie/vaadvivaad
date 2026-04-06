@@ -1,0 +1,55 @@
+# ====================================================
+# VaadVivaad — Common Configuration
+# ====================================================
+# Profile-specific overrides in application-dev.yml and application-prod.yml
+# Activate with: --spring.profiles.active=dev
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 86400000  # 24 hours in milliseconds
+
+spring:
+  name: vaadvivaad
+
+  # ---- Database (JPA + Hibernate) ----
+  jpa:
+    # NEVER use ddl-auto in production. Flyway manages schema.
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+      open-in-view: false
+
+  # ---- Flyway ----
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  # ---- Jackson (JSON serialization) ----
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+
+# ---- Server ----
+server:
+  port: 8080
+
+# ---- Actuator (Health + Info) ----
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+claude:
+  api-key: ${CLAUDE_API_KEY:dummy-key-for-dev}
+  base-url: https://api.anthropic.com
+  model: claude-3-haiku-20240307
+  max-tokens: 300
+  timeout-seconds: 30

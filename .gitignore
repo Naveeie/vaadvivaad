@@ -1,0 +1,82 @@
+```gitignore
+# ===========================
+# Backend - Java / Spring Boot
+# ===========================
+backend/target/
+backend/*.jar
+backend/*.war
+
+# Maven wrapper (if used)
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# ===========================
+# IDE - Eclipse
+# ===========================
+.metadata/
+*.class
+.settings/
+.classpath
+.project
+bin/
+tmp/
+*.tmp
+*.swp
+*~.nib
+.loadpath
+.recommenders/
+.factorypath
+
+# ===========================
+# IDE - IntelliJ (in case anyone else opens it)
+# ===========================
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# ===========================
+# IDE - VS Code
+# ===========================
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# ===========================
+# Frontend - Node / React
+# ===========================
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+# ===========================
+# Environment & Secrets
+# ===========================
+.env
+.env.local
+.env.production
+*.pem
+*.key
+
+# ===========================
+# Docker
+# ===========================
+# Don't ignore docker-compose.yml (we want it in Git)
+# But ignore data volumes
+docker-data/
+pgdata/
+
+# ===========================
+# OS Files
+# ===========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===========================
+# Logs
+# ===========================
+*.log
+logs/
+```
